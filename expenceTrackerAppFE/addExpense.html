@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Expense</title>
+</head>
+
+<body>
+    <form id="addExpForm">
+        <label id="addExpAmount">Amount: </label>
+        <input type="text" id="addExpAmount" name="amount" placeholder="enter amount here" required>
+        </br>
+        <label id="addExpdescription">description: </label>
+        <input type="password" id="addExpdescription" name="description" placeholder="enter description here" required>
+        </br>
+        <label id="addExpCatogary">catogary: </label>
+        <select id="addExpCatogary">
+            <option> fuel</option>
+            <option> food</option>
+            <option> appliances</option>
+            <option> bill</option>
+        </select>
+        </br>
+        <button type="submit" id="addExpBtn">Add Expences</button>
+    </form>
+    <ul id="addExpLists">
+
+    </ul>
+</body>
+
+</html>
