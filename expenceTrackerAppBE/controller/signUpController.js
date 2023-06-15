@@ -1,4 +1,5 @@
 const User = require('../model/modelCreation');
+const bcrypt = require('bcrypt');
 
 exports.signUpPost = async (req, res) => {
     console.log('POST Request');
@@ -13,7 +14,8 @@ exports.signUpPost = async (req, res) => {
         if (ifExist.length != 0) {
             res.send('user aready exist');
         } else {
-            const result = await User.create({ name, email, password });
+            const hash = await bcrypt.hash(password, 10);
+            const result = await User.create({ name, email, password: hash });
             res.send('Sign Up Successful!');
         }
     } catch (err) {

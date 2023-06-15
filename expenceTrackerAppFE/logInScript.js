@@ -2,7 +2,7 @@ const form = document.getElementById('logInForm');
 
 form.addEventListener('submit', async (e) => {
 
-    // e.preventDefault();
+    e.preventDefault();
     try {
         const result = await axios.post('http://localhost:3000/login', {
             email: e.target.email.value,
