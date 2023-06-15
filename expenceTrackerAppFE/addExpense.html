@@ -9,25 +9,27 @@
 
 <body>
     <form id="addExpForm">
-        <label id="addExpAmount">Amount: </label>
+        <label for="addExpAmount">Amount: </label>
         <input type="text" id="addExpAmount" name="amount" placeholder="enter amount here" required>
         </br>
-        <label id="addExpdescription">description: </label>
-        <input type="password" id="addExpdescription" name="description" placeholder="enter description here" required>
+        <label for="addExpdescription">description: </label>
+        <input type="text" id="addExpdescription" name="description" placeholder="enter description here" required>
         </br>
-        <label id="addExpCatogary">catogary: </label>
+        <label for="addExpCatogary">catogary: </label>
         <select id="addExpCatogary">
-            <option> fuel</option>
-            <option> food</option>
-            <option> appliances</option>
-            <option> bill</option>
+            <option value="fuel"> fuel</option>
+            <option value="food"> food</option>
+            <option value="appliances"> appliances</option>
+            <option value="bill"> bill</option>
         </select>
         </br>
-        <button type="submit" id="addExpBtn">Add Expences</button>
+        <button type="submit" id="addExpBtn">Add Expenses</button>
     </form>
     <ul id="addExpLists">
 
     </ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script src="addExpense.js"></script>
 </body>
 
 </html>
