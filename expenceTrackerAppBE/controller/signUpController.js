@@ -11,14 +11,15 @@ exports.signUpPost = async (req, res) => {
                 email: email
             }
         });
-        if (ifExist.length != 0) {
-            res.send('user aready exist');
+        if (ifExist.length > 0) {
+            res.json({ message: 'user aready exist', flag: false });
         } else {
             const hash = await bcrypt.hash(password, 10);
-            const result = await User.create({ name, email, password: hash });
-            res.send('Sign Up Successful!');
+            await User.create({ name, email, password: hash });
+            res.json({ message: 'Sign Up Successful!', flag: true, });
         }
     } catch (err) {
+        res.json({ message: err, flag: false });
         console.log(err);
     }
 

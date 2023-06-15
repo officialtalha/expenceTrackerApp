@@ -13,14 +13,15 @@ exports.logInPost = async (req, res) => {
         if (result != null) {
             const match = await bcrypt.compare(password, result.password);
             if (match) {
-                res.send(`LogIn Successful!`);
+                res.json({ message: "Login Successful", flag: true });
             } else {
-                res.send(`LogIn failed!`);
+                res.json({ message: "incorrect password", flag: false });
             }
         } else {
-            res.send('user does not exist!');
+            res.json({ message: "user does not exist!", flag: false });
         }
     } catch (err) {
+        res.json({ message: err, flag: false })
         console.log(err);
     }
 };

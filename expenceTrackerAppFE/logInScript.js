@@ -9,7 +9,10 @@ form.addEventListener('submit', async (e) => {
             password: e.target.password.value
         });
         document.getElementById('logInheading').innerText = '';
-        document.getElementById('logInheading').appendChild(document.createTextNode(`${result.data}`));
+        document.getElementById('logInheading').appendChild(document.createTextNode(`${result.data.message}`));
+        if (result.data.flag) {
+            window.location.href = "./addExpense.html";
+        }
     } catch (err) {
         console.log(err);
     }

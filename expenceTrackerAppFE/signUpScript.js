@@ -9,5 +9,8 @@ form.addEventListener('submit', async (e) => {
         password: e.target.password.value
     });
     document.getElementById('heading2').innerText = '';
-    document.getElementById('heading2').appendChild(document.createTextNode(`${result.data}`));
+    document.getElementById('heading2').appendChild(document.createTextNode(`${result.data.message}`));
+    if (result.data.flag) {
+        window.location.href = "/logIn.html"
+    }
 });
