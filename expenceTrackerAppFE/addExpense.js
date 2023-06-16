@@ -1,6 +1,6 @@
 const form = document.getElementById('addExpForm');
 const lists = document.getElementById('addExpLists');
-
+const userId = localStorage.getItem("userId");
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -8,7 +8,8 @@ form.addEventListener('submit', async (e) => {
         const result = await axios.post('http://localhost:3000/add-expense', {
             amount: e.target.amount.value,
             description: e.target.description.value,
-            catogary: document.querySelector('#addExpCatogary').value
+            catogary: document.querySelector('#addExpCatogary').value,
+            userId
         });
 
         const li1 = document.createElement('li');
@@ -43,7 +44,7 @@ form.addEventListener('submit', async (e) => {
 //wheb page refresh
 (async () => {
     try {
-        const result = await axios.get('http://localhost:3000/add-expense');
+        const result = await axios.get(`http://localhost:3000/add-expense/${userId}`);
 
         for (let i in result.data) {
             const li1 = document.createElement('li');

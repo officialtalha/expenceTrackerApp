@@ -13,6 +13,10 @@ const Expense = sequelize.define('expense', {
     catogary: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
     }
 });
 

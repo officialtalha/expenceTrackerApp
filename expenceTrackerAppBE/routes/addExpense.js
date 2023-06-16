@@ -7,6 +7,6 @@ router.use(bodyParser.json());
 
 router.post('/', addExpenseController.addExpensePost);
 router.delete('/:id', addExpenseController.addExpenseDelete);
-router.get('/', addExpenseController.addExpenseGet);
+router.get('/:userId', addExpenseController.addExpenseGet);
 
 module.exports = router;

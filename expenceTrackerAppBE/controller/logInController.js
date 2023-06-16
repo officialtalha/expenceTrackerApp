@@ -13,7 +13,7 @@ exports.logInPost = async (req, res) => {
         if (result != null) {
             const match = await bcrypt.compare(password, result.password);
             if (match) {
-                res.json({ message: "Login Successful", flag: true });
+                res.json({ message: "Login Successful", flag: true, id: result.id });
             } else {
                 res.json({ message: "incorrect password", flag: false });
             }

@@ -8,11 +8,16 @@ form.addEventListener('submit', async (e) => {
             email: e.target.email.value,
             password: e.target.password.value
         });
+        localStorage.removeItem("userId");
+        localStorage.setItem("userId", result.data.id);
         document.getElementById('logInheading').innerText = '';
         document.getElementById('logInheading').appendChild(document.createTextNode(`${result.data.message}`));
-        if (result.data.flag) {
-            window.location.href = "./addExpense.html";
-        }
+        setTimeout(() => {
+            if (result.data.flag) {
+                window.location.href = "./addExpense.html";
+            }
+        }, 1000);
+
     } catch (err) {
         console.log(err);
     }
