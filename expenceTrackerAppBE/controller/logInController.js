@@ -1,5 +1,8 @@
 const User = require('../model/modelUser');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const secretKey = require('../config/secretKey');
+
 exports.logInPost = async (req, res) => {
     try {
         console.log('POST Request');
@@ -11,9 +14,11 @@ exports.logInPost = async (req, res) => {
             }
         });
         if (result != null) {
-            const match = await bcrypt.compare(password, result.password);
-            if (match) {
-                res.json({ message: "Login Successful", flag: true, id: result.id });
+            const isMatched = await bcrypt.compare(password, result.password);
+            if (isMatched) {
+                const userId = result.id;
+                const token = jwt.sign({ userId }, secretKey);
+                res.json({ 'message': 'Login Successful', 'flag': true, 'token': token, 'name': result.name });
             } else {
                 res.json({ message: "incorrect password", flag: false });
             }

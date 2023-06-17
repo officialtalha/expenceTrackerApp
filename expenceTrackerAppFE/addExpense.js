@@ -1,6 +1,7 @@
 const form = document.getElementById('addExpForm');
 const lists = document.getElementById('addExpLists');
-const userId = localStorage.getItem("userId");
+const info = JSON.parse(localStorage.getItem("info"));
+const token = info.token;
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -9,8 +10,10 @@ form.addEventListener('submit', async (e) => {
             amount: e.target.amount.value,
             description: e.target.description.value,
             catogary: document.querySelector('#addExpCatogary').value,
-            userId
+            token
         });
+        const h2 = document.getElementById('h2');
+        h2.appendChild(document.createTextNode(`Welcome ${info.name}`));
 
         const li1 = document.createElement('li');
         li1.appendChild(document.createTextNode(`Amount: ${result.data.amount}`));
@@ -44,9 +47,18 @@ form.addEventListener('submit', async (e) => {
 //wheb page refresh
 (async () => {
     try {
-        const result = await axios.get(`http://localhost:3000/add-expense/${userId}`);
+        // console.log(typeof (token));
+        const result = await axios.get(`http://localhost:3000/add-expense`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token,
+            }
+        });
 
+        const h2 = document.getElementById('h2');
+        h2.appendChild(document.createTextNode(`Welcome ${info.name}`));
         for (let i in result.data) {
+
             const li1 = document.createElement('li');
             li1.appendChild(document.createTextNode(`Amount: ${result.data[i].amount}`));
 

@@ -8,8 +8,12 @@ form.addEventListener('submit', async (e) => {
             email: e.target.email.value,
             password: e.target.password.value
         });
-        localStorage.removeItem("userId");
-        localStorage.setItem("userId", result.data.id);
+        localStorage.clear();
+        const info = {
+            'token': result.data.token,
+            'name': result.data.name
+        };
+        localStorage.setItem("info", JSON.stringify(info));
         document.getElementById('logInheading').innerText = '';
         document.getElementById('logInheading').appendChild(document.createTextNode(`${result.data.message}`));
         setTimeout(() => {

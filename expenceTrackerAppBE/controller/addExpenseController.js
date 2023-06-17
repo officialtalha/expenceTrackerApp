@@ -1,12 +1,16 @@
 const Expense = require('../model/modelExpense');
+const jwt = require('jsonwebtoken');
+const secretKey = require('../config/secretKey');
 
 exports.addExpensePost = async (req, res) => {
     console.log('POST Request');
     try {
-        const { amount, description, catogary, userId } = req.body;
+        const { amount, description, catogary, token } = req.body;
 
+        const decode = jwt.verify(token, secretKey);
+        const userId = decode.userId;
         const result = await Expense.create({ amount, description, catogary, userId });
-        res.send(result);
+        res.json(result);
     } catch (err) {
         console.log(err);
     }
@@ -30,14 +34,14 @@ exports.addExpenseDelete = async (req, res) => {
 
 exports.addExpenseGet = async (req, res) => {
     console.log('GET Request');
-    const userId = req.params.userId;
     try {
+        const user = req.user;
         const result = await Expense.findAll({
             where: {
-                userId: userId
+                userId: user.id
             }
         });
-        res.send(result);
+        res.json(result);
     } catch (err) {
         console.log(err);
     }
