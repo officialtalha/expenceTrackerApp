@@ -1,11 +1,10 @@
+const path = require('path');
 const User = require('../model/modelUser');
 const bcrypt = require('bcrypt');
-
 exports.signUpPost = async (req, res) => {
     console.log('POST Request');
     try {
         const { name, email, password } = req.body;
-
         const ifExist = await User.findAll({
             where: {
                 email: email

@@ -8,13 +8,22 @@ form.addEventListener('submit', async (e) => {
         email: e.target.email.value,
         password: e.target.password.value
     });
-
-    document.getElementById('heading2').innerText = '';
-    document.getElementById('heading2').appendChild(document.createTextNode(`${result.data.message}`));
-
+    const headingSignup = document.getElementById('heading2');
+    headingSignup.innerText = '';
+    headingSignup.appendChild(document.createTextNode(`${result.data.message}`));
+    // if (result.data.message == 'Sign Up Successful!') {
+    //     headingSignup.style.color = 'green';
+    // } else {
+    //     headingSignup.style.color = 'red';
+    // }
+    if (result.data.flag) {
+        headingSignup.style.color = 'green';
+    } else {
+        headingSignup.style.color = 'red';
+    }
     setTimeout(() => {
         if (result.data.flag) {
-            window.location.href = "/logIn.html"
+            window.location.href = "/login.html"
         }
     }, 1000);
 

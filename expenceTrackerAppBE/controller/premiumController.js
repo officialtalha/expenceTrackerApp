@@ -1,0 +1,53 @@
+const jwt = require('jsonwebtoken');
+const Razorpay = require('razorpay');
+const Order = require('../model/modelOrder');
+const instance = new Razorpay({
+    key_id: process.env.RZP_key_id,
+    key_secret: process.env.RZP_key_secret
+});
+
+
+exports.premiumGet = async (req, res) => {
+    try {
+        const amount = 100 * 100;
+        instance.orders.create({ amount, currency: "INR" }, async (err, order) => {
+            try {
+                if (err) {
+                    return res.status(500).json({ message: 'somthing error: ' + err });
+                }
+                await Order.create({
+                    paymentid: "nil",
+                    orderid: order.id,
+                    status: "pending",
+                    userId: req.user.id
+                });
+                return res.status(200).json({ order, key_id: process.env.RZP_key_id });
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+exports.premiumPost = async (req, res) => {
+    try {
+        const token = req.header('Authorization');
+        const decoded = jwt.verify(token, process.env.JWT_SecretKey);
+        const payment_id = req.body.payment_id;
+        const { id, status } = req.body.order_id;
+        await Order.update({
+            status: status,
+            paymentid: payment_id
+        },
+            {
+                where: {
+                    userId: decoded.userId
+                }
+            });
+        res.end();
+    } catch (err) {
+        console.log(err);
+    }
+};

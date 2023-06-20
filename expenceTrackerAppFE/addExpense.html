@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://www.freepnglogos.com/uploads/e-logo-transparent-png-20.png" type="image/png">
     <title>Add Expense</title>
 </head>
 
@@ -11,6 +12,7 @@
 
     <h2 id="h2"></h2>
     <h4> <a href="./logIn.html">log out</a> </h4>
+    <h3 id="totalExpense"> </h3>
     <form method="post" id="addExpForm">
         <label for="addExpAmount">Amount: </label>
         <input type="text" id="addExpAmount" name="amount" placeholder="enter amount here" required>
@@ -29,12 +31,19 @@
         </br>
         <button type="submit" id="addExpBtn">Add Expenses</button>
     </form>
-
+    <button type="submit" id="premiumBtn">Get Premium</button>
+    <button type="submit" id="dltAcntBtn">Delete This Account</button>
     <ul id="addExpLists">
 
     </ul>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" nomap></script> -->
+
+    <!-- <script src="axios.js"></script> -->
     <script src="addExpense.js"></script>
+
 </body>
 
 </html>

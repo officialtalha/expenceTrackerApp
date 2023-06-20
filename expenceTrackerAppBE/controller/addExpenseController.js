@@ -1,13 +1,12 @@
 const Expense = require('../model/modelExpense');
 const jwt = require('jsonwebtoken');
-const secretKey = require('../config/secretKey');
 
 exports.addExpensePost = async (req, res) => {
     console.log('POST Request');
     try {
         const { amount, description, catogary, token } = req.body;
 
-        const decode = jwt.verify(token, secretKey);
+        const decode = jwt.verify(token, process.env.JWT_SecretKey);
         const userId = decode.userId;
         const result = await Expense.create({ amount, description, catogary, userId });
         res.json(result);

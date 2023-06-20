@@ -1,11 +1,21 @@
 const form = document.getElementById('addExpForm');
 const lists = document.getElementById('addExpLists');
+const premiumBtn = document.getElementById('premiumBtn');
 const info = JSON.parse(localStorage.getItem("info"));
 const token = info.token;
+// let isPremium = false;
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     try {
+        // const premiumCheck = await axios.get(`http://localhost:3000/check-premium`, {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': token,
+        //     }
+
+
+        // });
         const result = await axios.post('http://localhost:3000/add-expense', {
             amount: e.target.amount.value,
             description: e.target.description.value,
@@ -39,15 +49,29 @@ form.addEventListener('submit', async (e) => {
             lists.removeChild(li2);
             lists.removeChild(li3);
             lists.removeChild(deleteBtn);
+            location.reload();
         }
+        location.reload();
     } catch (err) {
         console.log(err);
     }
 });
+
+// const checkPremium = async () => {
+
+// };
 //wheb page refresh
 (async () => {
     try {
-        // console.log(typeof (token));
+        const premiumCheck = await axios.get(`http://localhost:3000/check-premium`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token,
+            }
+        });
+        if (premiumCheck.data.length > 0) {
+            premiumBtn.remove();
+        }
         const result = await axios.get(`http://localhost:3000/add-expense`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -55,9 +79,14 @@ form.addEventListener('submit', async (e) => {
             }
         });
 
+        let sum = 0;
+
         const h2 = document.getElementById('h2');
         h2.appendChild(document.createTextNode(`Welcome ${info.name}`));
+
         for (let i in result.data) {
+
+            sum += Number(result.data[i].amount);
 
             const li1 = document.createElement('li');
             li1.appendChild(document.createTextNode(`Amount: ${result.data[i].amount}`));
@@ -83,9 +112,73 @@ form.addEventListener('submit', async (e) => {
                 lists.removeChild(li2);
                 lists.removeChild(li3);
                 lists.removeChild(deleteBtn);
+                location.reload();
             }
         }
+        document.getElementById('totalExpense').innerText = `Total Expense Amount: ${sum}`;
     } catch (err) {
         console.log(err);
     }
 })();
+
+//delete account
+document.getElementById('dltAcntBtn').addEventListener('click', async (e) => {
+    const flag = confirm(`This account will be deleted permanently, This account's user will not abe access it anymore. would you likee to delete it?`);
+
+    try {
+        if (flag) {
+            await axios.delete(`http://localhost:3000/dltAc`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token,
+                }
+            });
+            window.location.href = './login.html'
+        }
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+//premium code
+premiumBtn.addEventListener('click', async (e) => {
+    try {
+        const result = await axios.get('http://localhost:3000/premium', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token,
+            }
+        });
+
+        var options = {
+            "key": result.data.key_id,
+            "order_id": result.data.order,
+            "handler": async function (result) {
+                await axios.post('http://localhost:3000/premium', {
+                    order_id: options.order_id,
+                    payment_id: result.razorpay_payment_id,
+                },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': token,
+                        }
+                    });
+                alert('you are a premium user now.');
+                location.reload();
+            }
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.open();
+        e.preventDefault();
+        rzp.on('payment.faild', function (result) {
+            console.log(result);
+            alert('something went wrong.');
+        });
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+
