@@ -1,5 +1,6 @@
 const form = document.getElementById('addExpForm');
 const lists = document.getElementById('addExpLists');
+const leaderboard = document.getElementById('leader-board');
 const premiumBtn = document.getElementById('premiumBtn');
 const info = JSON.parse(localStorage.getItem("info"));
 const token = info.token;
@@ -57,9 +58,6 @@ form.addEventListener('submit', async (e) => {
     }
 });
 
-// const checkPremium = async () => {
-
-// };
 //wheb page refresh
 (async () => {
     try {
@@ -71,6 +69,59 @@ form.addEventListener('submit', async (e) => {
         });
         if (premiumCheck.data.length > 0) {
             premiumBtn.remove();
+            const h3 = document.createElement('h3');
+            h3.className = 'premium-user';
+            h3.innerText = 'You are a Premium user.'
+            document.getElementsByTagName('body')[0].insertBefore(h3, document.getElementById('dltAcntBtn'));
+
+            const leaderBtn = document.createElement('button');
+            leaderBtn.id = 'leaderBtn';
+            leaderBtn.innerText = 'show leaderboard';
+            document.getElementsByTagName('body')[0].insertBefore(leaderBtn, document.getElementById('dltAcntBtn'));
+            leaderboard.innerHTML = '';
+            leaderBtn.onclick = async () => {
+                try {
+                    if (leaderboard.hasChildNodes()) {
+                        leaderboard.innerHTML = '';
+                        leaderBtn.innerText = 'show leaderboard';
+                    } else {
+                        const userSum = await axios.get(`http://localhost:3000/leaderboar`);
+                        const allUser = userSum.data.allUser;
+                        const allExpense = userSum.data.allExpense;;
+                        const arr = [];
+                        for (let x in allUser) {
+                            let sum = 0;
+                            for (let y in allExpense) {
+                                if (allUser[x].id == allExpense[y].userId) {
+                                    sum += Number(allExpense[y].amount);
+                                }
+                            }
+                            arr.push({
+                                "name": allUser[x].name,
+                                "amount": sum
+                            });
+                        }
+                        arr.sort((a, b) => a.amount - b.amount).reverse();
+
+                        for (let z in arr) {
+                            let name1 = arr[z].name;
+                            let amount1 = arr[z].amount;
+                            const leaderLi1 = document.createElement('li');
+                            leaderLi1.id = 'leaderLi1';
+                            leaderLi1.appendChild(document.createTextNode(`Name: ${name1} - Amount: ${amount1}`));
+                            leaderboard.appendChild(leaderLi1);
+                        }
+                        leaderBtn.innerText = 'close leader board';
+                    }
+
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+
+            const leaderH3 = document.createElement('h3');
+            leaderH3.innerText = 'Leader Board';
+            document.getElementsByTagName('body')[0].insertBefore(leaderH3, leaderboard);
         }
         const result = await axios.get(`http://localhost:3000/add-expense`, {
             headers: {
@@ -82,6 +133,7 @@ form.addEventListener('submit', async (e) => {
         let sum = 0;
 
         const h2 = document.getElementById('h2');
+        h2.className = 'neon-text';
         h2.appendChild(document.createTextNode(`Welcome ${info.name}`));
 
         for (let i in result.data) {

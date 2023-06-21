@@ -1,0 +1,10 @@
+.neon-text {
+    color: #fff;
+    text-shadow: 0 0 5px #48ccf5, 0 0 10px #48ccf5, 0 0 20px #48ccf5, 0 0 30px #48ccf5, 0 0 40px #48ccf5, 0 0 50px #48ccf5, 0 0 60px #48ccf5;
+}
+
+.premium-user {
+    font-family: 'Indie Flower', cursive;
+    font-family: 'Teko', sans-serif;
+    color: #556368;
+}

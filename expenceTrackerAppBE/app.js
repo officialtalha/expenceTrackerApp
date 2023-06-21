@@ -11,6 +11,7 @@ const addExpenseRoute = require('./routes/addExpense');
 const premiumRoutes = require('./routes/premium');
 const deleteAccountRoutes = require('./routes/deleteAccount');
 const checkPremiumRoutes = require('./routes/checkPremium');
+const leaderboardRoutes = require('./routes/leaderboard');
 //models
 const Expense = require('./model/modelExpense');
 const User = require('./model/modelUser');
@@ -25,6 +26,7 @@ app.use('/add-expense', addExpenseRoute);
 app.use('/premium', premiumRoutes);
 app.use('/dltAc', deleteAccountRoutes);
 app.use('/check-premium', checkPremiumRoutes);
+app.use('/leaderboar', leaderboardRoutes);
 
 User.hasMany(Expense);//important to understand one to many relation 
 Expense.belongsTo(User);
