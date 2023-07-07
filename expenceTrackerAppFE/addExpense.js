@@ -9,14 +9,6 @@ form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     try {
-        // const premiumCheck = await axios.get(`http://localhost:3000/check-premium`, {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': token,
-        //     }
-
-
-        // });
         const result = await axios.post('http://localhost:3000/add-expense', {
             amount: e.target.amount.value,
             description: e.target.description.value,
@@ -58,7 +50,7 @@ form.addEventListener('submit', async (e) => {
     }
 });
 
-//wheb page refresh
+//when page refresh
 (async () => {
     try {
         const premiumCheck = await axios.get(`http://localhost:3000/check-premium`, {
@@ -67,7 +59,7 @@ form.addEventListener('submit', async (e) => {
                 'Authorization': token,
             }
         });
-        if (premiumCheck.data.length > 0) {
+        if (premiumCheck.data.length > 0 && premiumCheck.data[0].status == 'created') {
             premiumBtn.remove();
             const h3 = document.createElement('h3');
             h3.className = 'premium-user';
@@ -85,30 +77,21 @@ form.addEventListener('submit', async (e) => {
                         leaderboard.innerHTML = '';
                         leaderBtn.innerText = 'show leaderboard';
                     } else {
-                        const userSum = await axios.get(`http://localhost:3000/leaderboar`);
+                        const userSum = await axios.get(`http://localhost:3000/leaderboard`);
                         const allUser = userSum.data.allUser;
-                        const allExpense = userSum.data.allExpense;;
                         const arr = [];
-                        for (let x in allUser) {
-                            let sum = 0;
-                            for (let y in allExpense) {
-                                if (allUser[x].id == allExpense[y].userId) {
-                                    sum += Number(allExpense[y].amount);
-                                }
-                            }
-                            arr.push({
-                                "name": allUser[x].name,
-                                "amount": sum
-                            });
-                        }
-                        arr.sort((a, b) => a.amount - b.amount).reverse();
+                        // arr.sort((a, b) => a.amount - b.amount).reverse();
 
-                        for (let z in arr) {
-                            let name1 = arr[z].name;
-                            let amount1 = arr[z].amount;
+                        for (let y in allUser) {
+                            arr.push(allUser[y]);
+                        }
+                        arr.sort((a, b) => a.totalExpense - b.totalExpense).reverse();
+                        console.log(arr);
+
+                        for (let x in arr) {
                             const leaderLi1 = document.createElement('li');
                             leaderLi1.id = 'leaderLi1';
-                            leaderLi1.appendChild(document.createTextNode(`Name: ${name1} - Amount: ${amount1}`));
+                            leaderLi1.appendChild(document.createTextNode(`Name: ${arr[x].name} - Amount: ${arr[x].totalExpense}`));
                             leaderboard.appendChild(leaderLi1);
                         }
                         leaderBtn.innerText = 'close leader board';
@@ -175,7 +158,7 @@ form.addEventListener('submit', async (e) => {
 
 //delete account
 document.getElementById('dltAcntBtn').addEventListener('click', async (e) => {
-    const flag = confirm(`This account will be deleted permanently, This account's user will not abe access it anymore. would you likee to delete it?`);
+    const flag = confirm(`This account will be deleted permanently, This account's user will not able access it anymore. would you like to delete it?`);
 
     try {
         if (flag) {

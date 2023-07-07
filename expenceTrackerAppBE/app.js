@@ -26,7 +26,7 @@ app.use('/add-expense', addExpenseRoute);
 app.use('/premium', premiumRoutes);
 app.use('/dltAc', deleteAccountRoutes);
 app.use('/check-premium', checkPremiumRoutes);
-app.use('/leaderboar', leaderboardRoutes);
+app.use('/leaderboard', leaderboardRoutes);
 
 User.hasMany(Expense);//important to understand one to many relation 
 Expense.belongsTo(User);
