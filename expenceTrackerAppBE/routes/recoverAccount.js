@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
-const otpController = require('../controller/otpController');
+const recoverAccountController = require('../controller/recoverAccountController');
 
 router.use(bodyParser.json());
 
-router.post('/', otpController.otpPost);
+router.post('/', recoverAccountController.recoverAccountGet);
 
 module.exports = router;

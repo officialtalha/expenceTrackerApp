@@ -43,6 +43,7 @@ exports.addExpensePost = async (req, res) => {
 
 exports.addExpenseDelete = async (req, res) => {
     console.log('DELETE Request');
+    const t = await sequelize.transaction();
     try {
         const id = req.params.id;
         const token = req.header('Authorization');
@@ -54,13 +55,15 @@ exports.addExpenseDelete = async (req, res) => {
             ],
             where: {
                 id: id
-            }
+            },
+            transaction: t
         });
 
         await Expense.destroy({
             where: {
                 id: id
-            }
+            },
+            transaction: t
         });
         const totalExpenses = await User.findAll({
             attributes: [
@@ -68,7 +71,8 @@ exports.addExpenseDelete = async (req, res) => {
             ],
             where: {
                 id: decode.userId
-            }
+            },
+            transaction: t
         });
 
         const finalAmount = totalExpenses[0].dataValues.totalExpenses - amount[0].dataValues.amount;
@@ -78,12 +82,16 @@ exports.addExpenseDelete = async (req, res) => {
             {
                 where: {
                     id: decode.userId
-                }
+                },
+                transaction: t
             }
         );
+        await t.commit();
         res.end();
     } catch (err) {
+        await t.rollback();
         console.log(err);
+        return res.status(500).json({ success: false, error: err });
     }
 };
 
@@ -99,5 +107,6 @@ exports.addExpenseGet = async (req, res) => {
         res.json(result);
     } catch (err) {
         console.log(err);
+        return res.status(500).json({ success: false, error: err });
     }
 };

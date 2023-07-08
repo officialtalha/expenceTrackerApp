@@ -85,20 +85,13 @@ form.addEventListener('submit', async (e) => {
                                 'Authorization': token,
                             }
                         });
-                        // console.log(userSum.data.allUsers);
                         const allUser = userSum.data.allUsers;
-                        const arr = [];
-                        // arr.sort((a, b) => a.amount - b.amount).reverse();
+                        // arr.sort((a, b) => a.totalExpenses - b.totalExpenses).reverse();
 
-                        for (let y in allUser) {
-                            arr.push(allUser[y]);
-                        }
-                        arr.sort((a, b) => a.totalExpenses - b.totalExpenses).reverse();
-
-                        for (let x in arr) {
+                        for (let x in allUser) {
                             const leaderLi1 = document.createElement('li');
                             leaderLi1.id = 'leaderLi1';
-                            leaderLi1.appendChild(document.createTextNode(`Name: ${arr[x].name} - Amount: ${arr[x].totalExpenses}`));
+                            leaderLi1.appendChild(document.createTextNode(`Name: ${allUser[x].name} - Amount: ${allUser[x].totalExpenses}`));
                             leaderboard.appendChild(leaderLi1);
                         }
                         leaderBtn.innerText = 'close leader board';

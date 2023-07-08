@@ -31,3 +31,9 @@ form.addEventListener('submit', async (e) => {
         console.log(err);
     }
 });
+
+document.getElementById('forgetBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+
+    window.location.href = './forgetPassword.html';
+});

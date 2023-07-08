@@ -7,7 +7,8 @@ exports.leaderboardGet = async (req, res) => {
         const allUsers = await User.findAll({
             attributes: [
                 'id', 'name', 'totalExpenses'
-            ]
+            ],
+            order: [['totalExpenses', 'DESC']]
         });
         // const allUser = await User.findAll({
         //     attributes: [
@@ -25,6 +26,7 @@ exports.leaderboardGet = async (req, res) => {
         res.status(200).json({ allUsers });
     } catch (err) {
         console.log(err);
-        res.status(400).json({ message: 'somethong went wrong.', err });
+        res.status(500).json({ success: false, error: err });
     }
 };
+
