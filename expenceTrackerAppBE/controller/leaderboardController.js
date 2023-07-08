@@ -4,27 +4,25 @@ const sequelize = require('../util/database');
 
 exports.leaderboardGet = async (req, res) => {
     try {
-        const allUser = await User.findAll({
+        const allUsers = await User.findAll({
             attributes: [
-                'id', 'name',
-                [sequelize.fn('sum', sequelize.col('amount')), 'totalExpense']
-            ],
-            include: [
-                {
-                    model: Expense,
-                    attributes: []
-                }
-            ],
-            group: ['user.id']
+                'id', 'name', 'totalExpenses'
+            ]
         });
-        // const allExpense = await Expense.findAll({
+        // const allUser = await User.findAll({
         //     attributes: [
-        //         'userId',
+        //         'id', 'name',
         //         [sequelize.fn('sum', sequelize.col('amount')), 'totalExpense']
         //     ],
-        //     group: ['userId']
+        //     include: [
+        //         {
+        //             model: Expense,
+        //             attributes: []
+        //         }
+        //     ],
+        //     group: ['user.id']
         // });
-        res.status(200).json({ allUser });
+        res.status(200).json({ allUsers });
     } catch (err) {
         console.log(err);
         res.status(400).json({ message: 'somethong went wrong.', err });

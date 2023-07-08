@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Razorpay = require('razorpay');
 const Order = require('../model/modelOrder');
+const User = require('../model/modelUser');
 const instance = new Razorpay({
     key_id: process.env.RZP_key_id,
     key_secret: process.env.RZP_key_secret
@@ -46,6 +47,13 @@ exports.premiumPost = async (req, res) => {
                     userId: decoded.userId
                 }
             });
+        await User.update({
+            isPremium: true
+        }, {
+            where: {
+                id: decoded.userId
+            }
+        });
         res.end();
     } catch (err) {
         console.log(err);

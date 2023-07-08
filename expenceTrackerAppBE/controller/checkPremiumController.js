@@ -1,12 +1,14 @@
-const Order = require('../model/modelOrder');
+const User = require('../model/modelUser');
 exports.checkPremiumGet = async (req, res) => {
     id = req.user.id;
-    const result = await Order.findAll({
+    const result = await User.findAll({
+        attributes: [
+            'isPremium'
+        ],
         where: {
-            userId: id
+            id: id
         }
     });
     console.log(result);
     res.send(result);
-    res.end();
 };

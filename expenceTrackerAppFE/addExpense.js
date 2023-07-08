@@ -15,6 +15,7 @@ form.addEventListener('submit', async (e) => {
             catogary: document.querySelector('#addExpCatogary').value,
             token
         });
+        // console.log(result);
         const h2 = document.getElementById('h2');
         h2.appendChild(document.createTextNode(`Welcome ${info.name}`));
 
@@ -59,7 +60,8 @@ form.addEventListener('submit', async (e) => {
                 'Authorization': token,
             }
         });
-        if (premiumCheck.data.length > 0 && premiumCheck.data[0].status == 'created') {
+        // console.log(premiumCheck.data);
+        if (premiumCheck.data[0].isPremium == true) {
             premiumBtn.remove();
             const h3 = document.createElement('h3');
             h3.className = 'premium-user';
@@ -77,21 +79,26 @@ form.addEventListener('submit', async (e) => {
                         leaderboard.innerHTML = '';
                         leaderBtn.innerText = 'show leaderboard';
                     } else {
-                        const userSum = await axios.get(`http://localhost:3000/leaderboard`);
-                        const allUser = userSum.data.allUser;
+                        const userSum = await axios.get(`http://localhost:3000/leaderboard`, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': token,
+                            }
+                        });
+                        // console.log(userSum.data.allUsers);
+                        const allUser = userSum.data.allUsers;
                         const arr = [];
                         // arr.sort((a, b) => a.amount - b.amount).reverse();
 
                         for (let y in allUser) {
                             arr.push(allUser[y]);
                         }
-                        arr.sort((a, b) => a.totalExpense - b.totalExpense).reverse();
-                        console.log(arr);
+                        arr.sort((a, b) => a.totalExpenses - b.totalExpenses).reverse();
 
                         for (let x in arr) {
                             const leaderLi1 = document.createElement('li');
                             leaderLi1.id = 'leaderLi1';
-                            leaderLi1.appendChild(document.createTextNode(`Name: ${arr[x].name} - Amount: ${arr[x].totalExpense}`));
+                            leaderLi1.appendChild(document.createTextNode(`Name: ${arr[x].name} - Amount: ${arr[x].totalExpenses}`));
                             leaderboard.appendChild(leaderLi1);
                         }
                         leaderBtn.innerText = 'close leader board';
@@ -142,7 +149,12 @@ form.addEventListener('submit', async (e) => {
             lists.appendChild(deleteBtn);
 
             deleteBtn.onclick = async () => {
-                await axios.delete(`http://localhost:3000/add-expense/${result.data[i].id}`);
+                await axios.delete(`http://localhost:3000/add-expense/${result.data[i].id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token,
+                    }
+                });
                 lists.removeChild(li1);
                 lists.removeChild(li2);
                 lists.removeChild(li3);
