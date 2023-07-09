@@ -15,10 +15,18 @@ exports.recoverAccountGet = async (req, res) => {
         if (result.length > 0) {
             const userId = result[0].dataValues.id;
             const id = uuid.v4();
+            await fP.update({
+                active: false
+            }, {
+                where: {
+                    userId: userId
+                }
+            });
             await fP.create({
                 id: id,
                 active: true,
-                userId: userId
+                userId: userId,
+                expiredBy: new Date()
             });
             //nodemailer code start
             const config = {

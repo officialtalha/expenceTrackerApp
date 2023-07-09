@@ -27,6 +27,7 @@ exports.newPassGet = async (req, res) => {
         `);
             await fP.update({
                 active: false,
+                expiredBy: new Date()
             }, {
                 where: {
                     id: id
@@ -61,9 +62,11 @@ exports.newPassPost = async (req, res) => {
                         id: userId
                     }
                 });
-            res.send(`<h4 style="color: green">Congratulations password has been changed successfully.</h4>`);
+            res.send(`<h4 style="color: green">Congratulations your password has been changed successfully.</h4>
+            <h5>you can close this tab and go back to the previous tab.</h5>
+            `);
         } else {
-            res.send(`<h4 style="color: red">password does not matched.</h4>`);
+            res.send(`<h4 style="color: red">You Entered password does not matched. click Back and try again.</h4>`);
         }
     } catch (err) {
         console.log(err);
