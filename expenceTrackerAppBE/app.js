@@ -13,13 +13,12 @@ const deleteAccountRoutes = require('./routes/deleteAccount');
 const checkPremiumRoutes = require('./routes/checkPremium');
 const leaderboardRoutes = require('./routes/leaderboard');
 const recoverAccount = require('./routes/recoverAccount');
-const OtpRoutes = require('./routes/Otp');
 const newPasswordRoutes = require('./routes/newPassword');
 //models
 const Expense = require('./model/modelExpense');
 const User = require('./model/modelUser');
 const Order = require('./model/modelOrder');
-const Otp = require('./model/modelOtp');
+const fP = require('./model/modelForgetPass');
 
 const PORT = 3000;
 
@@ -32,7 +31,6 @@ app.use('/dltAc', deleteAccountRoutes);
 app.use('/check-premium', checkPremiumRoutes);
 app.use('/leaderboard', leaderboardRoutes);
 app.use('/recover-account', recoverAccount);
-app.use('/otp', OtpRoutes);
 app.use('/new-password', newPasswordRoutes);
 
 User.hasMany(Expense);//important to understand one to many relation 
@@ -41,8 +39,8 @@ Expense.belongsTo(User);
 User.hasMany(Order);
 Order.belongsTo(User);
 
-User.hasMany(Otp);
-Otp.belongsTo(User);
+User.hasMany(fP);
+fP.belongsTo(User);
 (async () => {
     const result = await sequelize.sync();
     app.listen(PORT, (err) => {
