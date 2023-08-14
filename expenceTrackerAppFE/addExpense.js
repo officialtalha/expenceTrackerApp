@@ -96,9 +96,8 @@ form.addEventListener('submit', async (e) => {
                             }
                         });
                     if (result.data.success == true) {
-                        const linkDownload1 = result.data.link;
                         const a1 = document.createElement('a');
-                        a1.href = linkDownload1;
+                        a1.href = result.data.link;
                         a1.download = 'file.txt';
                         a1.click();
                     }
@@ -107,6 +106,83 @@ form.addEventListener('submit', async (e) => {
                 }
             }
             document.getElementById('rcntdwnld').removeAttribute('style');
+            //pagination buttons
+            const prevBtn = document.createElement('button');
+            prevBtn.id = 'prevBtn';
+            prevBtn.innerText = '<<';
+            prevBtn.disabled = true;
+            document.getElementsByTagName('body')[0].insertBefore(prevBtn, leaderboard);
+
+            const curBtn = document.createElement('button');
+            curBtn.id = 'curBtn';
+            curBtn.innerText = 1;
+            document.getElementsByTagName('body')[0].insertBefore(curBtn, leaderboard);
+
+            const nextBtn = document.createElement('button');
+            nextBtn.id = 'nextBtn';
+            nextBtn.innerText = '>>';
+            document.getElementsByTagName('body')[0].insertBefore(nextBtn, leaderboard);
+            //pagination buttons operations 
+            //next button operation
+            nextBtn.onclick = async () => {
+                const curPage = Number(curBtn.innerText) + 1;
+                const links = await axios.get(`http://localhost:3000/downloadLink/${curPage}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token,
+                    }
+                });
+                downloadLink.innerHTML = '';
+                if (links.data.success) {
+                    for (let l in links.data.result) {
+                        const downloadLi = document.createElement('li');
+                        const a2 = document.createElement('a');
+                        a2.href = links.data.result[l].link;
+                        let arr = links.data.result[l].createdAt.split('T');
+                        // let arr = str.split('T');
+                        a2.innerText = `${links.data.result[l].id}-${arr[0]}.txt`;
+                        a2.download = `${arr[0]}.txt`;
+                        downloadLi.appendChild(a2);
+                        downloadLink.appendChild(downloadLi);
+                    }
+                }
+                if (prevBtn.disabled) {
+                    curBtn.innerText = 2;
+                    prevBtn.disabled = false;
+                } else {
+                    curBtn.innerText = Number(curBtn.innerText) + 1;
+                }
+            }
+            prevBtn.onclick = async () => {
+                const curPage = Number(curBtn.innerText) - 1;
+                const links = await axios.get(`http://localhost:3000/downloadLink/${curPage}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token,
+                    }
+                });
+                downloadLink.innerHTML = '';
+                if (links.data.success) {
+                    for (let l in links.data.result) {
+                        const downloadLi = document.createElement('li');
+                        const a2 = document.createElement('a');
+                        a2.href = links.data.result[l].link;
+                        let arr = links.data.result[l].createdAt.split('T');
+                        // let arr = str.split('T');
+                        a2.innerText = `${links.data.result[l].id}-${arr[0]}.txt`;
+                        a2.download = `${arr[0]}.txt`;
+                        downloadLi.appendChild(a2);
+                        downloadLink.appendChild(downloadLi);
+                    }
+                }
+                if (curBtn.innerText == 2) {
+                    curBtn.innerText = 1;
+                    prevBtn.disabled = true;
+                } else {
+                    curBtn.innerText = Number(curBtn.innerText) - 1;
+                }
+
+            }
             //leader board operations 
             leaderboard.innerHTML = '';
             leaderBtn.onclick = async () => {
@@ -198,16 +274,16 @@ form.addEventListener('submit', async (e) => {
             });
             // console.log(links.data.result);
             if (links.data.success) {
-                let counter = 1;
                 for (let l in links.data.result) {
                     const downloadLi = document.createElement('li');
                     const a2 = document.createElement('a');
                     a2.href = links.data.result[l].link;
-                    a2.innerText = `${links.data.result[l].createdAt}file${counter}.txt`;
-                    a2.download = `file.txt`;
+                    let arr = links.data.result[l].createdAt.split('T');
+                    // let arr = str.split('T');
+                    a2.innerText = `${links.data.result[l].id}-${arr[0]}.txt`;
+                    a2.download = `${arr[0]}.txt`;
                     downloadLi.appendChild(a2);
                     downloadLink.appendChild(downloadLi);
-                    counter++;
                 }
             }
         }
@@ -243,7 +319,7 @@ document.getElementById('dltAcntBtn').addEventListener('click', async (e) => {
     }
 });
 
-//premium code
+//razor-pay code
 premiumBtn.addEventListener('click', async (e) => {
     try {
         const result = await axios.get('http://localhost:3000/premium', {
@@ -283,5 +359,3 @@ premiumBtn.addEventListener('click', async (e) => {
         console.log(err);
     }
 });
-
-

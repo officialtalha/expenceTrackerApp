@@ -8,6 +8,8 @@ exports.downloadGet = async (req, res) => {
         const userId = req.user.id;
         const fileName = `file${userId}/${new Date()}.txt`;
 
+        let count = 1;
+        const name = `file${count}`;
         //fetching expenses for perticular user
         const expenses = await Expense.findAll({
             attributes: ['amount', 'description', 'catogary'],
@@ -18,7 +20,7 @@ exports.downloadGet = async (req, res) => {
         const data = JSON.stringify(expenses);
 
         //init aws 
-        let s3Bucket = await new aws.S3({
+        let s3Bucket = new aws.S3({
             accessKeyId: process.env.AWS_KEY_ID,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
         });
@@ -30,19 +32,18 @@ exports.downloadGet = async (req, res) => {
             ACL: 'public-read'
         }
         //uploading data to the s3 bucket
-        await s3Bucket.upload(params, async (err, response) => {
+        s3Bucket.upload(params, async (err, response) => {
             if (err) {
                 console.log(err);
+                res.status(500).json({ success: false, error: err });
             } else {
-                // console.log(response.Location);
-                res.status(200).json({ success: true, link: response.Location });
                 await DL.create({
                     link: response.Location,
                     userId: userId
                 });
+                res.status(200).json({ success: true, link: response.Location });
             }
         });
-
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false, error: err });

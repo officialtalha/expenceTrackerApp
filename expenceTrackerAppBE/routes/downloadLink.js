@@ -7,6 +7,6 @@ const auth = require('../middleware/auth');
 router.use(bodyParser.json());
 
 router.get('/', auth.authenticate, downloadLinkController.downloadLinkGet);
-
+router.get('/:curPage', auth.authenticate, downloadLinkController.downloadLinkDynamicGet);
 
 module.exports = router;
