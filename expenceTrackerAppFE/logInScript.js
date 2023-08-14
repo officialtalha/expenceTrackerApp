@@ -21,11 +21,11 @@ form.addEventListener('submit', async (e) => {
         } else {
             headingLogin.style.color = 'red';
         }
-        setTimeout(() => {
-            if (result.data.flag) {
+        if (result.data.flag) {
+            setTimeout(() => {
                 window.location.href = "./addExpense.html";
-            }
-        }, 1000);
+            }, 1000);
+        }
 
     } catch (err) {
         console.log(err);

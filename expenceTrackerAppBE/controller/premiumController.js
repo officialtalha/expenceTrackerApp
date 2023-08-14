@@ -10,7 +10,7 @@ const instance = new Razorpay({
 
 exports.premiumGet = async (req, res) => {
     try {
-        const amount = 100 * 100;
+        const amount = 100;
         instance.orders.create({ amount, currency: "INR" }, async (err, order) => {
             try {
                 if (err) {

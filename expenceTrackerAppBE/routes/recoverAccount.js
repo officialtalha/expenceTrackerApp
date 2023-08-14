@@ -5,6 +5,6 @@ const recoverAccountController = require('../controller/recoverAccountController
 
 router.use(bodyParser.json());
 
-router.post('/', recoverAccountController.recoverAccountGet);
+router.post('/', recoverAccountController.recoverAccountPost);
 
 module.exports = router;

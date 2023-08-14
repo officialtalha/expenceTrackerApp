@@ -1,6 +1,7 @@
 const User = require('../model/modelUser');
+
 exports.checkPremiumGet = async (req, res) => {
-    id = req.user.id;
+    const id = req.user.id;
     const result = await User.findAll({
         attributes: [
             'isPremium'
@@ -9,6 +10,6 @@ exports.checkPremiumGet = async (req, res) => {
             id: id
         }
     });
-    console.log(result);
+    // console.log(result);
     res.send(result);
 };

@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const uuid = require('uuid');
 const User = require('../model/modelUser');
 const fP = require('../model/modelForgetPass');
-exports.recoverAccountGet = async (req, res) => {
+exports.recoverAccountPost = async (req, res) => {
     console.log('Recover-GET');
     try {
         const { email, name } = req.body;
@@ -15,13 +15,13 @@ exports.recoverAccountGet = async (req, res) => {
         if (result.length > 0) {
             const userId = result[0].dataValues.id;
             const id = uuid.v4();
-            await fP.update({
-                active: false
-            }, {
-                where: {
-                    userId: userId
-                }
-            });
+            // await fP.update({
+            //     active: false
+            // }, {
+            //     where: {
+            //         userId: userId
+            //     }
+            // });
             await fP.create({
                 id: id,
                 active: true,
