@@ -99,12 +99,52 @@ exports.addExpenseGet = async (req, res) => {
     console.log('GET Request');
     try {
         const user = req.user;
+        const curPage = 1;
+        const itemsPerPage = req.params.getItemPerPage;
         const result = await Expense.findAll({
             where: {
                 userId: user.id
+            },
+            offset: (curPage - 1) * itemsPerPage,
+            limit: Number(itemsPerPage)
+        });
+        res.status(200).json({ result });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ success: false, error: err });
+    }
+};
+
+exports.addExpenseDynamicGet = async (req, res) => {
+    console.log('GET Request');
+    try {
+        const user = req.user;
+        const curPage = req.params.curPage;
+        const itemsPerPage = Number(req.params.itemPerPage);
+        const result = await Expense.findAll({
+            where: {
+                userId: user.id
+            },
+            offset: (curPage - 1) * itemsPerPage,
+            limit: itemsPerPage
+        });
+        res.status(200).json({ success: true, result });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ success: false, error: err });
+    }
+};
+
+exports.sumExpensesGet = async (req, res) => {
+    console.log('Symple GET Request');
+    try {
+        const result = await User.findAll({
+            attributes: ['totalExpenses'],
+            where: {
+                id: req.user.id
             }
         });
-        res.json(result);
+        res.status(200).json({ result });
     } catch (err) {
         console.log(err);
         return res.status(500).json({ success: false, error: err });

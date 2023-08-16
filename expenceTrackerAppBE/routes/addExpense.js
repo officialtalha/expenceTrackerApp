@@ -8,6 +8,8 @@ router.use(bodyParser.json());
 
 router.post('/', addExpenseController.addExpensePost);
 router.delete('/:id', addExpenseController.addExpenseDelete);
-router.get('/', authenticateMiddleware.authenticate, addExpenseController.addExpenseGet);
+router.get('/local/:getItemPerPage', authenticateMiddleware.authenticate, addExpenseController.addExpenseGet);
+router.get('/:curPage/:itemPerPage', authenticateMiddleware.authenticate, addExpenseController.addExpenseDynamicGet);
+router.get('/sum-expenses', authenticateMiddleware.authenticate, addExpenseController.sumExpensesGet);
 
 module.exports = router;

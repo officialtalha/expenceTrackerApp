@@ -13,6 +13,7 @@ form.addEventListener('submit', async (e) => {
             'name': result.data.name
         };
         localStorage.setItem("info", JSON.stringify(info));
+        localStorage.setItem('itemPerPage', '3');
         const headingLogin = document.getElementById('logInheading');
         headingLogin.innerText = '';
         headingLogin.appendChild(document.createTextNode(`${result.data.message}`));
