@@ -4,6 +4,9 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const sequelize = require('./util/database');
+const compression = require('compression');
+const helmet = require('helmet');
+const morgan = require('morgan');
 //import routes
 const signUpRoute = require('./routes/signUp');
 const logInRoute = require('./routes/login');
@@ -22,10 +25,12 @@ const User = require('./model/modelUser');
 const Order = require('./model/modelOrder');
 const fP = require('./model/modelForgetPass');
 const DL = require('./model/modelDownloadLink');
-
 const PORT = 3000;
 //routes
 app.use(cors());
+app.use(compression());
+app.use(helmet());
+app.use(morgan('combined'));
 app.use('/signup', signUpRoute);
 app.use('/login', logInRoute);
 app.use('/add-expense', addExpenseRoute);
