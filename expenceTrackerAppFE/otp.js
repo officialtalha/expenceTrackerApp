@@ -7,7 +7,7 @@ form.addEventListener('submit', async (e) => {
         const result = await axios.post('http://localhost:3000/otp', {
             otp: document.getElementById('otpField').value
         });
-
+        console.log(result);
         if (result.data.success) {
             window.location.href = './newPassword.html';
         } else {
