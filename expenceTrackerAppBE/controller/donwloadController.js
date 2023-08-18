@@ -1,9 +1,9 @@
+const logger = require('../middleware/logger');
 const aws = require('aws-sdk');
 const Expense = require('../model/modelExpense');
 const DL = require('../model/modelDownloadLink');
 
 exports.downloadGet = async (req, res) => {
-    console.log('downloadGet request');
     try {
         const userId = req.user.id;
         const fileName = `file${userId}/${new Date()}.txt`;
@@ -34,7 +34,7 @@ exports.downloadGet = async (req, res) => {
         //uploading data to the s3 bucket
         s3Bucket.upload(params, async (err, response) => {
             if (err) {
-                console.log(err);
+                logger.error(err);
                 res.status(500).json({ success: false, error: err });
             } else {
                 await DL.create({
@@ -45,7 +45,7 @@ exports.downloadGet = async (req, res) => {
             }
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(500).json({ success: false, error: err });
     }
 };

@@ -7,6 +7,7 @@ const sequelize = require('./util/database');
 const compression = require('compression');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const logger = require('./middleware/logger');
 //import routes
 const signUpRoute = require('./routes/signUp');
 const logInRoute = require('./routes/login');
@@ -30,7 +31,7 @@ const PORT = 3000;
 app.use(cors());
 app.use(compression());
 app.use(helmet());
-// app.use(morgan('combined'));
+app.use(morgan('combined'));
 app.use('/signup', signUpRoute);
 app.use('/login', logInRoute);
 app.use('/add-expense', addExpenseRoute);
@@ -58,15 +59,15 @@ DL.belongsTo(User);
 //running the server
 (async () => {
     try {
-        const result = await sequelize.sync();
+        await sequelize.sync();
         app.listen(PORT, (err) => {
             if (!err) {
-                console.log(`server running on port http://localhost:${PORT}`);
+                logger.info(`server running on port http://localhost:${PORT}`);
             } else {
-                console.log(err);
+                logger.error(err);
             }
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
     }
 })();

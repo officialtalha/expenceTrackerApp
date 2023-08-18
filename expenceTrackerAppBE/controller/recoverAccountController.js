@@ -1,3 +1,4 @@
+const logger = require('../middleware/logger');
 const uuid = require('uuid');
 const User = require('../model/modelUser');
 const fP = require('../model/modelForgetPass');
@@ -52,10 +53,10 @@ exports.recoverAccountPost = async (req, res) => {
 
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
-                    console.log(error);
+                    logger.error(error);
                     res.status(500).json({ success: false });
                 } else {
-                    console.log('Email sent: ' + info.response);
+                    logger.info('Email sent: ' + info.response);
                     res.status(200).json({ success: true });
                 }
             });
@@ -66,7 +67,7 @@ exports.recoverAccountPost = async (req, res) => {
         }
         // console.log(data);
     } catch (err) {
-        console.log(err);
+        logger.error(error);
         return res.status(500).json({ success: false, error: err });
     }
 };

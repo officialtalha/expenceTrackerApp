@@ -1,9 +1,9 @@
+const logger = require('../middleware/logger');
 const User = require('../model/modelUser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fP = require('../model/modelForgetPass');
 exports.newPassGet = async (req, res) => {
-    console.log('newPass GET');
     const id = req.params.id;
     try {
         const result = await fP.findAll({
@@ -37,13 +37,12 @@ exports.newPassGet = async (req, res) => {
             res.status(200).send(`<h4 style="color: red">sorry link has been expired.</h4>`);
         }
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         return res.status(500).send(`<h4 style="color: red">Incorrect Link.</h4>`);
     }
 };
 
 exports.newPassPost = async (req, res) => {
-    console.log('resetPass POST');
     const { newPassName1, newPassName2, uuidName } = req.body;
     try {
         if (newPassName1 == newPassName2) {
@@ -62,14 +61,14 @@ exports.newPassPost = async (req, res) => {
                         id: userId
                     }
                 });
-            res.send(`<h4 style="color: green">Congratulations your password has been changed successfully.</h4>
+            res.status(200).send(`<h4 style="color: green">Congratulations your password has been changed successfully.</h4>
             <h5>you can close this tab and go back to the previous tab.</h5>
             `);
         } else {
-            res.send(`<h4 style="color: red">You Entered password does not matched. click Back and try again.</h4>`);
+            res.status(500).send(`<h4 style="color: red">You Entered password does not matched. click Back and try again.</h4>`);
         }
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         return res.status(500).json({ success: false, error: err });
     }
 };

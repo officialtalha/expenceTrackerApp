@@ -1,3 +1,4 @@
+const logger = require('../middleware/logger');
 const jwt = require('jsonwebtoken');
 const Razorpay = require('razorpay');
 const Order = require('../model/modelOrder');
@@ -14,6 +15,7 @@ exports.premiumGet = async (req, res) => {
         instance.orders.create({ amount, currency: "INR" }, async (err, order) => {
             try {
                 if (err) {
+                    logger.error(err);
                     return res.status(500).json({ message: 'somthing error: ' + err });
                 }
                 await Order.create({
@@ -24,11 +26,11 @@ exports.premiumGet = async (req, res) => {
                 });
                 return res.status(200).json({ order, key_id: process.env.RZP_key_id });
             } catch (err) {
-                console.log(err);
+                logger.error(err);
             }
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
     }
 };
 
@@ -56,6 +58,6 @@ exports.premiumPost = async (req, res) => {
         });
         res.end();
     } catch (err) {
-        console.log(err);
+        logger.error(err);
     }
 };

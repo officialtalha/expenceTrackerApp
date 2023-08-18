@@ -1,10 +1,10 @@
+const logger = require('../middleware/logger');
 const Expense = require('../model/modelExpense');
 const User = require('../model/modelUser');
 const sequelize = require('../util/database');
 const jwt = require('jsonwebtoken');
 
 exports.addExpensePost = async (req, res) => {
-    console.log('POST Request');
     const t = await sequelize.transaction();
     try {
         const { amount, description, catogary, token } = req.body;
@@ -36,13 +36,12 @@ exports.addExpensePost = async (req, res) => {
         res.json(result);
     } catch (err) {
         await t.rollback();
-        console.log(err);
+        logger.error(err);
         return res.status(500).json({ success: false, error: err });
     }
 };
 
 exports.addExpenseDelete = async (req, res) => {
-    console.log('DELETE Request');
     const t = await sequelize.transaction();
     try {
         const id = req.params.id;
@@ -90,13 +89,12 @@ exports.addExpenseDelete = async (req, res) => {
         res.end();
     } catch (err) {
         await t.rollback();
-        console.log(err);
+        logger.error(err);
         return res.status(500).json({ success: false, error: err });
     }
 };
 
 exports.addExpenseGet = async (req, res) => {
-    console.log('GET Request');
     try {
         const user = req.user;
         const curPage = 1;
@@ -110,13 +108,12 @@ exports.addExpenseGet = async (req, res) => {
         });
         res.status(200).json({ result });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         return res.status(500).json({ success: false, error: err });
     }
 };
 
 exports.addExpenseDynamicGet = async (req, res) => {
-    console.log('GET Request');
     try {
         const user = req.user;
         const curPage = req.params.curPage;
@@ -130,13 +127,12 @@ exports.addExpenseDynamicGet = async (req, res) => {
         });
         res.status(200).json({ success: true, result });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         return res.status(500).json({ success: false, error: err });
     }
 };
 
 exports.sumExpensesGet = async (req, res) => {
-    console.log('Symple GET Request');
     try {
         const result = await User.findAll({
             attributes: ['totalExpenses'],
@@ -146,7 +142,7 @@ exports.sumExpensesGet = async (req, res) => {
         });
         res.status(200).json({ result });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         return res.status(500).json({ success: false, error: err });
     }
 };

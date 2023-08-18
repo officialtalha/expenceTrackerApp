@@ -1,3 +1,4 @@
+const logger = require('../middleware/logger');
 const jwt = require('jsonwebtoken');
 const User = require('../model/modelUser');
 const Expense = require('../model/modelExpense');
@@ -24,6 +25,7 @@ exports.deleteAccountDelete = async (req, res) => {
         });
         res.end();
     } catch (err) {
-        console.log(err);
+        logger.error(err);
+        res.status(500).json({ status: false, err });
     }
 };

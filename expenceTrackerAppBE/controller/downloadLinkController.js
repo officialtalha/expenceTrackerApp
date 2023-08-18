@@ -1,3 +1,4 @@
+const logger = require('../middleware/logger');
 const DL = require('../model/modelDownloadLink');
 exports.downloadLinkGet = async (req, res) => {
     try {
@@ -16,13 +17,12 @@ exports.downloadLinkGet = async (req, res) => {
 
         res.status(200).json({ success: true, result });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(500).json({ success: false, error: err });
     }
 };
 
 exports.downloadLinkDynamicGet = async (req, res) => {
-    console.log('downloadLinkDynamicGet');
     try {
         const userId = req.user.id;
         const currentPage = req.params.curPage;
@@ -36,10 +36,9 @@ exports.downloadLinkDynamicGet = async (req, res) => {
             offset: startIndex,
             limit: numberPerPage
         });
-
         res.status(200).json({ success: true, result });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(500).json({ success: false, error: err });
     }
 };
