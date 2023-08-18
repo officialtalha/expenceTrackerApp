@@ -30,7 +30,7 @@ const PORT = 3000;
 app.use(cors());
 app.use(compression());
 app.use(helmet());
-app.use(morgan('combined'));
+// app.use(morgan('combined'));
 app.use('/signup', signUpRoute);
 app.use('/login', logInRoute);
 app.use('/add-expense', addExpenseRoute);

@@ -1,6 +1,7 @@
 const User = require('../model/modelUser');
 const Expense = require('../model/modelExpense');
 const sequelize = require('../util/database');
+const logger = require('../middleware/logger');
 
 exports.leaderboardGet = async (req, res) => {
     try {
@@ -23,6 +24,7 @@ exports.leaderboardGet = async (req, res) => {
         //     ],
         //     group: ['user.id']
         // });
+        logger.info('hello i m info');
         res.status(200).json({ allUsers });
     } catch (err) {
         console.log(err);
