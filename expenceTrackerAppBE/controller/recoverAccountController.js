@@ -54,7 +54,7 @@ exports.recoverAccountPost = async (req, res) => {
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
                     logger.error(error);
-                    res.status(500).json({ success: false });
+                    res.json({ success: false });
                 } else {
                     logger.info('Email sent: ' + info.response);
                     res.status(200).json({ success: true });

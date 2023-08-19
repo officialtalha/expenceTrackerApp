@@ -16,7 +16,7 @@ exports.premiumGet = async (req, res) => {
             try {
                 if (err) {
                     logger.error(err);
-                    return res.status(500).json({ message: 'somthing error: ' + err });
+                    return res.json({ message: 'somthing error: ' + err });
                 }
                 await Order.create({
                     paymentid: "nil",

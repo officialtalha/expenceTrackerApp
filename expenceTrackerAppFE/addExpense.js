@@ -72,7 +72,6 @@ form.addEventListener('submit', async (e) => {
                 'Authorization': token,
             }
         });
-        // console.log(sum.data.result[0].totalExpenses);
         document.getElementById('totalExpense').innerText = `Total Expense Amount: ${sum.data.result[0].totalExpenses}`;
         //fetching all the expenses
         const getItemPerPage = localStorage.getItem('itemPerPage');
@@ -82,12 +81,8 @@ form.addEventListener('submit', async (e) => {
                 'Authorization': token,
             }
         });
-        // console.log(result);
-        // let sum = 0;
 
         for (let i in result.data.result) {
-
-            // sum += Number(result.data[i].amount);
 
             const li1 = document.createElement('li');
             li1.appendChild(document.createTextNode(`Amount: ${result.data.result[i].amount}`));
@@ -243,7 +238,7 @@ form.addEventListener('submit', async (e) => {
                 'Authorization': token,
             }
         });
-        if (premiumCheck.data[0].isPremium == true) {
+        if (premiumCheck.data.result[0].isPremium == true) {
             premiumBtn.remove();
             const h3 = document.createElement('h3');
             h3.className = 'premium-user';

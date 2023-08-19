@@ -35,7 +35,7 @@ exports.downloadGet = async (req, res) => {
         s3Bucket.upload(params, async (err, response) => {
             if (err) {
                 logger.error(err);
-                res.status(500).json({ success: false, error: err });
+                res.json({ success: false, error: err });
             } else {
                 await DL.create({
                     link: response.Location,

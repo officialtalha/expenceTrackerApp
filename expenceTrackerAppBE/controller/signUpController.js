@@ -11,7 +11,7 @@ exports.signUpPost = async (req, res) => {
             }
         });
         if (ifExist.length > 0) {
-            res.status(500).json({ message: 'user aready exist', flag: false });
+            res.json({ message: 'user aready exist', flag: false });
         } else {
             const hash = await bcrypt.hash(password, 10);
             await User.create({ name, email, password: hash });

@@ -8,7 +8,6 @@ form.addEventListener('submit', async (e) => {
             email: e.target.email.value,
             password: e.target.password.value
         });
-        console.log(result);
         const info = {
             'token': result.data.token,
             'name': result.data.name

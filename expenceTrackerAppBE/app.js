@@ -8,6 +8,7 @@ const compression = require('compression');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const logger = require('./middleware/logger');
+const PORT = process.env.PORT || 3000;
 //import routes
 const signUpRoute = require('./routes/signUp');
 const logInRoute = require('./routes/login');
@@ -26,7 +27,6 @@ const User = require('./model/modelUser');
 const Order = require('./model/modelOrder');
 const fP = require('./model/modelForgetPass');
 const DL = require('./model/modelDownloadLink');
-const PORT = 3000;
 //routes
 app.use(cors());
 app.use(compression());
@@ -63,11 +63,14 @@ DL.belongsTo(User);
         app.listen(PORT, (err) => {
             if (!err) {
                 logger.info(`server running on port http://localhost:${PORT}`);
+                // console.log(`server running on port http://localhost:${PORT}`);
             } else {
                 logger.error(err);
+                // console.log(err);
             }
         });
     } catch (err) {
         logger.error(err);
+        // console.log(err);
     }
 })();

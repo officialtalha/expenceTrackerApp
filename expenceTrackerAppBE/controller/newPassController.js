@@ -65,7 +65,7 @@ exports.newPassPost = async (req, res) => {
             <h5>you can close this tab and go back to the previous tab.</h5>
             `);
         } else {
-            res.status(500).send(`<h4 style="color: red">You Entered password does not matched. click Back and try again.</h4>`);
+            res.status(200).send(`<h4 style="color: red">You Entered password does not matched. click Back and try again.</h4>`);
         }
     } catch (err) {
         logger.error(err);

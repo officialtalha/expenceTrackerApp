@@ -18,13 +18,14 @@ exports.logInPost = async (req, res) => {
                 const token = jwt.sign({ userId }, process.env.JWT_SecretKey);
                 res.status(200).json({ 'message': 'Login Successful', 'flag': true, 'token': token, 'name': result.name });
             } else {
-                res.status(500).json({ message: "incorrect password", flag: false });
+                res.json({ message: "incorrect password", flag: false });
             }
         } else {
-            res.status(500).json({ message: "user does not exist!", flag: false });
+            res.json({ message: "user does not exist!", flag: false });
         }
     } catch (err) {
         logger.error(err);
+        // console.log(err);
         res.status(500).json({ message: err, flag: false })
     }
 };

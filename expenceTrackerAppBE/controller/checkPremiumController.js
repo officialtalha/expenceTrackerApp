@@ -12,7 +12,7 @@ exports.checkPremiumGet = async (req, res) => {
                 id: id
             }
         });
-        res.status(200).json({ status: true, result });
+        res.json({ success: true, result });
     } catch (err) {
         logger.error(err);
         res.status(500).json({ status: false, err });
