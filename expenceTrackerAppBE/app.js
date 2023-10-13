@@ -1,13 +1,15 @@
+//configuring environment variable
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, 'config', '.env') });
+//import modules/packages
 const express = require('express');
 const app = express();
 const cors = require('cors');
 const sequelize = require('./util/database');
-const compression = require('compression');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const logger = require('./middleware/logger');
+//setup port number 
 const PORT = process.env.PORT || 3000;
 //import routes
 const signUpRoute = require('./routes/signUp');
@@ -29,7 +31,6 @@ const fP = require('./model/modelForgetPass');
 const DL = require('./model/modelDownloadLink');
 //routes
 app.use(cors());
-app.use(compression());
 app.use(helmet());
 app.use(morgan('combined'));
 app.use('/signup', signUpRoute);
@@ -63,14 +64,11 @@ DL.belongsTo(User);
         app.listen(PORT, (err) => {
             if (!err) {
                 logger.info(`server running on port http://localhost:${PORT}`);
-                // console.log(`server running on port http://localhost:${PORT}`);
             } else {
                 logger.error(err);
-                // console.log(err);
             }
         });
     } catch (err) {
         logger.error(err);
-        // console.log(err);
     }
 })();
